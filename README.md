@@ -1,30 +1,48 @@
-# OpenRSC
+# RSC Remastered
 
-An open-source re-implementation of RuneScape Classic for private use.
+*(Formerly OpenRSC)*
+
+An open-source re-implementation of the RuneScape Classic client for private use.
 
 [![Screenshot](docs/screenshot.png)](https://youtu.be/o6hY1LMLiSU)
 
-See **[ABOUT.md](docs/ABOUT.md)** for more information.
+## :dart: Aim
+
+The primary aim of this project is to **deobfuscate**, **refactor** and **modernize** the RuneScape Classic client.
+
+While other projects have had great success in deobfuscating the source code, it is still very messy and difficult to understand, due to the nature of the decompilation process. The original game was also constrained by the need to run on old hardware and primitive web browsers.
+
+Refactoring it can make it significantly easier to read and maintain the code, as shown by [this example](docs/example_refactor.md). This could pave the way for all sorts of future enhancements, and perhaps ports to other platforms.
+
+ > See **[about](docs/about.md)** for more information.
+
+## :hammer: Build & Run
+
+The project should work out-of-the-box with Eclipse.
+
+Alternatively, it can be compiled manually on Windows by running `build.bat`, and subsequently run using `run.bat`.
 
 ## :chart_with_upwards_trend: Progress
 
-The initial goal is to be able to fully render the Runescape world and freely move around it. Later, gameplay and server-side functionality can be added.
-
 :heavy_check_mark: Loading screen\
 :heavy_check_mark:️ Title screen\
-:heavy_check_mark:️ Landscape rendering\
-:heavy_check_mark:️ Wall rendering\
-:heavy_check_mark:️ Roof rendering\
 :heavy_check_mark:️ Dynamic world loading\
-:x: Door rendering\
-:x: Model rendering (e.g. trees, fountains)\
-:x: Mob rendering\
-:x: Camera rotation\
-:x: Zooming
+:heavy_check_mark:️ Camera rotation\
+:heavy_check_mark:️ Landscape\
+:heavy_check_mark:️ Walls\
+:heavy_check_mark:️ Roofs\
+:pencil2: User interface\
+:pencil2: Server login\
+:x: Retrieve server data
+
+> See **[ideas](docs/ideas.md)** for planned enhancements.
 
 ## :video_game: Controls
 
+Currently the world can be navigated freely:
+
 **Left Click:** Teleport\
+**Left / Right:** Rotate camera\
 **Page Up:** Go up a layer\
 **Page Down:** Go down a layer
 

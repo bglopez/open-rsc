@@ -1,25 +1,31 @@
 package client;
 
-import java.awt.Graphics;
-
 public abstract class State {
-    
-    protected RsLauncher launcher;
-    
+
+    protected RuneClient client;
+
     protected Input input = new Input();
 
-    public State(RsLauncher launcher) {
-        this.launcher = launcher;
+    public State(RuneClient launcher) {
+        this.client = launcher;
     }
-    
+
+    public void start() {}
+
+    public void destroy() {}
+
     public void pollInput() {}
 
     public void tick() {}
 
-    public abstract void render(Graphics g);
+    public abstract StateRenderer getRenderer();
 
     public Input getInput() {
         return input;
+    }
+
+    public RuneClient getClient() {
+        return client;
     }
 
 }

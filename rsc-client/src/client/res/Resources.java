@@ -1,18 +1,9 @@
 package client.res;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import com.thoughtworks.xstream.XStream;
 
 import client.entityhandling.defs.AnimationDef;
 import client.entityhandling.defs.DoorDef;
@@ -24,111 +15,47 @@ import client.entityhandling.defs.PrayerDef;
 import client.entityhandling.defs.SpellDef;
 import client.entityhandling.defs.TextureDef;
 import client.entityhandling.defs.TileDef;
-import client.model.Sector;
+import client.game.model.Sector;
 import client.util.DataUtils;
 
 /**
- * Class responsible for reading and storing resources required by the game.
- * 
+ * Class responsible for holding the game's resources.
+ *
  * <p><i>Based on <code>EntityHandler.java</code> from other RSC sources.</i>
- * 
+ *
  * @author Dan Bryce
  */
 public class Resources {
-
-    /*
-     * Directories
-     */
-    public static final String RESOURCES_DIR = "res/";
-    public static final String DATA_DIR = RESOURCES_DIR + "data/";
-
-    /**
-     * Package containing entity definitions.
-     */
-    private static final String ENTITY_DEF_PACKAGE_NAME = 
-            "client.entityhandling.defs";
-    
-    /**
-     * XStream used to read from / write to XML.
-     */
-    private static XStream xStream = new XStream();
 
     /*
      * ZIP archive file handles
      */
     public static ZipFile spriteArchive;
     public static ZipFile tileArchive;
-    
+
     /**
      * Loaded Sprites
      */
     public static Sprite[] sprites = new Sprite[4000];
-    
+
     /*
      * Loaded entity definitions
      */
-    public static NpcDef[] npcs;
-    public static ItemDef[] items;
-    public static TextureDef[] textureDefs;
     public static AnimationDef[] animations;
-    public static SpellDef[] spells;
-    public static PrayerDef[] prayers;
-    public static TileDef[] tiles;
     public static DoorDef[] doors;
     public static ElevationDef[] elevation;
     public static GameObjectDef[] objects;
+    public static ItemDef[] items;
+    public static NpcDef[] npcs;
+    public static PrayerDef[] prayers;
+    public static SpellDef[] spells;
+    public static TextureDef[] textureDefs;
+    public static TileDef[] tiles;
 
     /*
      * Texture data
      */
     public static Texture[] textures;
-    
-    static {
-        // XStream aliases
-        addAlias("NPCDef",        ENTITY_DEF_PACKAGE_NAME + ".NpcDef");
-        addAlias("ItemDef",       ENTITY_DEF_PACKAGE_NAME + ".ItemDef");
-        addAlias("TextureDef",    ENTITY_DEF_PACKAGE_NAME + ".TextureDef");
-        addAlias("AnimationDef",  ENTITY_DEF_PACKAGE_NAME + ".AnimationDef");
-        addAlias("ItemDropDef",   ENTITY_DEF_PACKAGE_NAME + ".ItemDropDef");
-        addAlias("SpellDef",      ENTITY_DEF_PACKAGE_NAME + ".SpellDef");
-        addAlias("PrayerDef",     ENTITY_DEF_PACKAGE_NAME + ".PrayerDef");
-        addAlias("TileDef",       ENTITY_DEF_PACKAGE_NAME + ".TileDef");
-        addAlias("DoorDef",       ENTITY_DEF_PACKAGE_NAME + ".DoorDef");
-        addAlias("ElevationDef",  ENTITY_DEF_PACKAGE_NAME + ".ElevationDef");
-        addAlias("GameObjectDef", ENTITY_DEF_PACKAGE_NAME + ".GameObjectDef");
-    }
-
-    public static InputStream getResourceAsStream(String filename) {
-        return Resources.class.getClassLoader().getResourceAsStream(filename);
-    }
-
-    private static void addAlias(String name, String className) {
-        try {
-            xStream.alias(name, Class.forName(className));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Object loadData(String filename) {
-        try {
-            InputStream is = new GZIPInputStream(
-                    getResourceAsStream(DATA_DIR + filename));
-            return xStream.fromXML(is);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    public static void writeData(File file, Object o) {
-        try {
-            OutputStream os = new GZIPOutputStream(new FileOutputStream(file));
-            xStream.toXML(o, os);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
 
     public static Sprite getSprite(int id) {
         return sprites[id];
@@ -191,13 +118,13 @@ public class Resources {
     }
 
     public static void prepareTexture(int id) {
-        
+
         if (id < 0) {
             return;
         }
-        
+
         Texture tex = textures[id];
-        
+
         if (tex.pixels != null) {
             // Texture already loaded
             return;
@@ -207,7 +134,7 @@ public class Resources {
         tex.pixels = new int[numPixels];
         int textureSize = !tex.isLarge() ? 64 : 128;
         int pixelIndex = 0;
-        
+
         // Produce texture by looking up colours in the palette
         for (int y = 0; y < textureSize; y++) {
             for (int x = 0; x < textureSize; x++) {
@@ -226,7 +153,7 @@ public class Resources {
 
         /*
          * Produce 3 additional versions of the texture.
-         * 
+         *
          * These seem to be darker versions, which seem to be drawn over the
          * normal texture during rendering.
          */
